@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>画板</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        // 画线 
+        let canvas = document.getElementById("canvas");  //获取canvas
+        canvas.width = document.documentElement.clientWidth
+        canvas.height = document.documentElement.clientHeight
+
+        let ctx = canvas.getContext("2d");
+        let paint = false
+        ctx.fillStyle = "black"
+
+        var isTouchDevice = 'ontouchstart' in document.documentElement
+
+        if (isTouchDevice) {
+            canvas.ontouchmove = (t) => {
+                let x = t.touches[0].clientX
+                let y = t.touches[0].clientY
+                ctx.beginPath();
+                ctx.arc(x, y, 10, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.fill();
+
+            }
+        } else {
+            canvas.onmousedown = () => {
+                paint = true
+            }
+
+            canvas.onmouseup = () => {
+                paint = false
+            }
+
+            canvas.onmousemove = (e) => {
+                if (paint === true) {
+                    ctx.beginPath();
+                    ctx.arc(e.clientX, e.clientY, 10, 0, 2 * Math.PI);
+                    ctx.stroke();
+                    ctx.fill();
+                    //ctx.fillRect(e.clientX - 5, e.clientY - 5, 10, 10)
+                }
+
+
+            }
+
+
+        }
+    </script>
+
+</body>
+
+</html>
